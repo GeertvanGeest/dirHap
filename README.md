@@ -1,5 +1,27 @@
 # dirHap
 
+## Installation
+Make a conda environment with e.g. python3.7:
+```
+conda create -n pysam_env_py37 python=3.7.* 
+conda activate pysam_env_py37
+```
+
+install pysam:
+```
+conda config --add channels bioconda
+conda install pysam
+``` 
+
+and numpy using pip:
+```
+pip install numpy
+```
+
+or conda:
+```
+conda install -c anaconda numpy 
+```
 
 ## Counting haplotypes
 The script haploCounter.py counts the haplotypes in a specific region.
@@ -23,4 +45,11 @@ haploCounter.py \
 -c 5 \
 -wmode w \
 -o haplotypes.txt
+```
+
+This gives the following output (haplotypes.txt)
+```
+s501    ST4.03ch01      29682248        29682338        CC      895
+s501    ST4.03ch01      29682248        29682338        AC      408
+s501    ST4.03ch01      29682248        29682338        CT      442
 ```
