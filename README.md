@@ -35,7 +35,29 @@ bedtools intersect -F 1 -abam alignment.bam -b regions.bed > alignment.intsc.bam
 Haplocounter works with a specific sample, on a specific region. 
 A vcf file denotes the SNPs used for haplotyping. 
 
-Example usage:
+Here's the usage:
+
+```
+usage: haploCounter.py [-h] -i INPUT.BAM -s SAMPLEID -vcf SNPS.VCF -r
+                       CHROM:START-END [-c C] [-o O] [-wmode WMODE]
+
+Processing of BAM files into haplotype counts.
+
+optional arguments:
+  -h, --help          show this help message and exit
+  -i INPUT.BAM        Input BAM file. Reads should cover entire specified
+                      region in -r
+  -s SAMPLEID         Sample ID
+  -vcf SNPS.VCF       Input (tabix-indexed) VCF/BCF file
+  -r CHROM:START-END  Region chr:start-end
+  -c C                Minimum number of reads supporting haplotype
+  -o O                Output count file
+  -wmode WMODE        Output write mode. E.g. 'a' for append or 'w' for write
+
+Copyright GvG
+```
+
+And an example:
 ```
 haploCounter.py \
 -i example.bam \
