@@ -1,5 +1,5 @@
 #!/bin/bash
-python haploCounter.py \
+../haploCounter.py \
 -i example.bam \
 -s s501 \
 -vcf example.vcf.gz \
