@@ -24,7 +24,7 @@ conda install -c anaconda numpy
 ```
 
 ## Counting haplotypes
-The script haploCounter.py counts the haplotypes in a specific region.
+The script haploCounter.py counts the haplotypes in a specified region.
 All the reads in the bam file should overlap the entire region specified. 
 
 Filter completely overlapping reads e.g. with bedtools:
@@ -32,7 +32,7 @@ Filter completely overlapping reads e.g. with bedtools:
 bedtools intersect -F 1 -abam alignment.bam -b regions.bed > alignment.intsc.bam
 ```
 
-Haplocounter works with a specific sample, on a specific region. 
+Haplocounter works with a specified sample, on a specified region. 
 A vcf file denotes the SNPs used for haplotyping. 
 
 Here's the usage:
