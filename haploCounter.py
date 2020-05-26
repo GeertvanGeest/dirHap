@@ -77,12 +77,10 @@ def write_counts(count_dict, sample, regtup, con, mincount):
 	'''
 	if count_dict is None:
 		return(None)
-	#con = open(connection, 'a')
 	for hap in count_dict.keys():
 		if count_dict[hap] >= mincount:
 			out = [sample, regtup[0], str(regtup[1]), str(regtup[2]), hap, str(count_dict[hap])]	
 			con.write("	".join(out) + "\n")
-	#con.close()
 	
 def run_haplocounter(bed, vcf, sam, sample, outfile, mincount):
 	'''
@@ -103,33 +101,16 @@ def run_haplocounter(bed, vcf, sam, sample, outfile, mincount):
 
 if __name__ == "__main__":
 	description_text = 'Processing of BAM files into haplotype counts.'
-	epilog_text = 'Copyright GvG'
-	# parser = argparse.ArgumentParser(description=description_text, epilog=epilog_text)
-	# parser.add_argument('-i', type=str, required=True, dest='input.bam', help='Input BAM file. Reads should cover entire specified region in -r')
-	# parser.add_argument('-s', type=str, required=True, dest='sampleID', help='Sample ID')
-	# parser.add_argument('-vcf', type=str, required=True, dest='SNPS.vcf.gz', help='Input (tabix-indexed) VCF/BCF file')
-	# parser.add_argument('-r', type=str, required=True, dest='CHROM:start-end', help='Region chr:start-end')
-	# parser.add_argument('-c', type=int, default = 0, help='Minimum number of reads supporting haplotype')
-	# parser.add_argument('-o', type=str, default='-', help='Output count file')
-	# parser.add_argument('-wmode', type=str, default='w', help="Output write mode. E.g. 'a' for append or 'w' for write ")
 
-	parser = argparse.ArgumentParser(description=description_text, epilog=epilog_text)
+	parser = argparse.ArgumentParser(description=description_text)
 	parser.add_argument('-i', type=str, required=True, help='Input BAM file. Reads should cover entire specified region in -r')
 	parser.add_argument('-s', type=str, required=True, help='Sample ID')
 	parser.add_argument('-vcf', type=str, required=True, help='Input (tabix-indexed) VCF/BCF file')
 	parser.add_argument('-bed', type=str, required=True, help='Input bed file with target regions')
 	parser.add_argument('-c', type=int, default = 0, help='Minimum number of reads supporting haplotype')
-	parser.add_argument('-o', type=str, default='-', help='Output count file')
-	# parser.add_argument('-wmode', type=str, default='w', help="Output write mode. E.g. 'a' for append or 'w' for write ")
-
+	parser.add_argument('-o', '--output_file', type=str, required=True, help='Output count file')
 
 	args = parser.parse_args()
 	
 	run_haplocounter(args.bed, args.vcf, args.i, args.s, args.o, args.c)
-	
-	# rspl = args.r.split(":")
-	# chr = rspl[0]
-	# reg = rspl[1].split("-")
-	# start = int(reg[0])
-	# end = int(reg[1])
-	
+
