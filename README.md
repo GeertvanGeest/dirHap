@@ -55,12 +55,12 @@ python haploCounter.py \
 This gives the following output (haplotypes.txt), which is a tab-delimited txt file, where columns correspond to "sample  chrom start end seq count"
 
 ```
-s501	ST4.03ch01	29682248	29682338	ACA	408
-s501	ST4.03ch01	29682248	29682338	CCA	894
-s501	ST4.03ch01	29682248	29682338	CTA	442
-s501	ST4.03ch01	46274385	46274478	CCCC	538
-s501	ST4.03ch01	46274385	46274478	CCCG	198
-s501	ST4.03ch01	46274385	46274478	CACG	11
+| s501 | ST4.03ch01 | 29682248 | 29682338 | ACA  | 408 |
+| s501 | ST4.03ch01 | 29682248 | 29682338 | CCA  | 894 |
+| s501 | ST4.03ch01 | 29682248 | 29682338 | CTA  | 442 |
+| s501 | ST4.03ch01 | 46274385 | 46274478 | CCCC | 538 |
+| s501 | ST4.03ch01 | 46274385 | 46274478 | CCCG | 198 |
+| s501 | ST4.03ch01 | 46274385 | 46274478 | CACG | 11  |
 ```
 
 ## Calculating dosages
@@ -76,10 +76,14 @@ python dosageEstimator.py \
 For each sample and region we generate (haplotype) dosages. 
 This gives the following output (haplotypes.txt)
 ```
-sample	chrom	start	end	seq	count	prob_true	freq	used	BA_dosage	BA_LR_ratio	MA_dosage	MA_LR_ratio
-s501	ST4.03ch01	29682248	29682338	CC	895	0.9999999999999999	0.5128939828080229	True	2.0	226.2838317191463	2	313.9956727936551
-s501	ST4.03ch01	29682248	29682338	AC	408	0.9999999999999999	0.233810888252149	True	1.0	259.3027998721581	1	313.9956727936551
-s501	ST4.03ch01	29682248	29682338	CT	442	0.9999999999999999	0.2532951289398281	True	1.0	221.94998205744247	1	313.9956727936551
+| sample | chrom      | start    | end      | seq  | count | prob_true | freq | used  | BA_dosage | BA_LR_ratio | MA_dosage | MA_LR_ratio |
+|--------|------------|----------|----------|------|-------|-----------|------|-------|-----------|-------------|-----------|-------------|
+| s501   | ST4.03ch01 | 29682248 | 29682338 | ACA  | 408   | 1.0       | 0.23 | True  | 1.0       | 258.9       | 1.0       | 313.3       |
+| s501   | ST4.03ch01 | 29682248 | 29682338 | CCA  | 894   | 1.0       | 0.51 | True  | 2.0       | 226.7       | 2.0       | 313.3       |
+| s501   | ST4.03ch01 | 29682248 | 29682338 | CTA  | 442   | 1.0       | 0.25 | True  | 1.0       | 221.5       | 1.0       | 313.3       |
+| s501   | ST4.03ch01 | 46274385 | 46274478 | CCCC | 538   | 1.0       | 0.72 | True  | 3.0       | 80.9        | 3.0       | 80.9        |
+| s501   | ST4.03ch01 | 46274385 | 46274478 | CCCG | 198   | 1.0       | 0.27 | True  | 1.0       | 80.9        | 1.0       | 80.9        |
+| s501   | ST4.03ch01 | 46274385 | 46274478 | CACG | 11    | 0.186     | 0.01 | False |           |             |           | 80.9        |
 ```
 
 where several columns are added to the original `haplotypes.txt` file:
