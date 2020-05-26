@@ -1,7 +1,7 @@
-from __future__ import print_function
+from __future__ import print_function # for compatibilitu with python 2
 
 import os
-import shlex
+import shlex # what does this do?
 import subprocess
 from argparse import ArgumentParser
 
@@ -14,10 +14,6 @@ import pandas as pd
 from scipy.stats import multinomial
 from scipy.stats import binom
 from scipy.stats import chisquare
-
-# from sklearn.metrics import confusion_matrix
-# import seaborn as sns
-# import matplotlib.pyplot as plt
 
 from math import *
 
@@ -119,7 +115,7 @@ class multi_nomial_likelihood:
 class perform_haplotyping:
     def __init__(self, df, freq=0.05, prob_true=0.99, ploidy=4, error=0.02):
 
-        self.df = df
+        self.df = df # this dataframe contains the raw haplotype counts. 
 
         # set thresholds for filtering
         self.freq_thres = freq
@@ -148,7 +144,9 @@ class perform_haplotyping:
         self.df.loc[self.df.index.values,'freq'] = freq
 
     def add_indices(self):
-            
+        """
+        Defines which haplotypes should be used for dosage estimatiion with the multi-allelic model. 
+        """
         indices = (self.df.prob_true > self.prob_true_thres) & (np.array(self.df.freq) > self.freq_thres)
         self.df.loc[self.df.index.values,'indices'] = indices
 
@@ -219,7 +217,7 @@ def main():
     file_path_group = argparser.add_argument_group(title='File structure')
     file_path_group.add_argument('--haplotype_data', type=str, help='File with haplotypes', required=True)
     file_path_group.add_argument('--output_file', type=str, help='Output file name', default="output.csv")
-    file_path_group.add_argument('--output_folder', type=str, help='Output folder',  default="./output/")
+    # file_path_group.add_argument('--output_folder', type=str, help='Output folder',  default="./output/")
 
     run_group = argparser.add_argument_group(title='Run command args')
     run_group.add_argument('--ploidy', type=str, help='Ploidy', default='4')
@@ -236,11 +234,14 @@ def main():
     error = float(args.error)
 
     # read in the haplotypes hapid	region	sample	count	chrom	start	end	seq
-    haplotype_table = pd.read_csv(args.haplotype_data, sep='\t')
-    haplotype_list = haplotype_table.groupby(["sample", "region"])
+    # THis solution does not scale particulary well. We could read this in chunks and process it parrallel. 
+    haplotype_table = pd.read_csv(args.haplotype_data, sep='\t', names=["sample",  "chrom", "start", "end", "seq", "count"])
+    print(haplotype_table)
+    haplotype_list = haplotype_table.groupby(["sample", "chrom", "start", "end"])
 
     dfs = []
 
+    # As the input is defined by sample and region we have a single df that is parsed for haplotype analysis. 
     for index, group in enumerate(haplotype_list):
         # print(index, group[0])
         
@@ -249,11 +250,17 @@ def main():
         
         haplotyper = perform_haplotyping(group[1], freq=freq_cutoff, prob_true=prob_true, ploidy=ploidy, error=error)
         haplotyper.run()
+
+        print(haplotyper.df)
+
         dfs += [haplotyper.df]
 
-    
-    output_file = args.output_folder + args.output_file
-    pd.concat(dfs).to_csv(output_file, index=None)
+
+    output_file = args.output_file
+    dfs = pd.concat(dfs)
+    dfs = dfs.rename(columns={'indices': "used"})   # change to used, more descriptive
+    dfs = dfs.round({"freq":2, "prob_true":3, "BA_LR_ratio":1,  "MA_LR_ratio":1}) # more nice output
+    dfs.to_csv(output_file, index=None, sep='\t')
 
 if __name__ == '__main__':
     main()

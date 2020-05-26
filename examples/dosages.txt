@@ -1,0 +1,4 @@
+sample	chrom	start	end	seq	count	prob_true	freq	used	BA_dosage	BA_LR_ratio	MA_dosage	MA_LR_ratio
+s501	ST4.03ch01	29682248	29682338	CC	895	1.0	0.51	True	2.0	226.3	2	314.0
+s501	ST4.03ch01	29682248	29682338	AC	408	1.0	0.23	True	1.0	259.3	1	314.0
+s501	ST4.03ch01	29682248	29682338	CT	442	1.0	0.25	True	1.0	221.9	1	314.0
