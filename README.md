@@ -54,12 +54,14 @@ python haploCounter.py \
 
 This gives the following output (haplotypes.txt), which is a tab-delimited txt file, where columns correspond to "sample  chrom start end seq count"
 
-| s501 | ST4.03ch01 | 29682248 | 29682338 | ACA  | 408 |
-| s501 | ST4.03ch01 | 29682248 | 29682338 | CCA  | 894 |
-| s501 | ST4.03ch01 | 29682248 | 29682338 | CTA  | 442 |
-| s501 | ST4.03ch01 | 46274385 | 46274478 | CCCC | 538 |
-| s501 | ST4.03ch01 | 46274385 | 46274478 | CCCG | 198 |
-| s501 | ST4.03ch01 | 46274385 | 46274478 | CACG | 11  |
+```
+s501	ST4.03ch01	29682248	29682338	ACA	408
+s501	ST4.03ch01	29682248	29682338	CCA	894
+s501	ST4.03ch01	29682248	29682338	CTA	442
+s501	ST4.03ch01	46274385	46274478	CCCC	538
+s501	ST4.03ch01	46274385	46274478	CCCG	198
+s501	ST4.03ch01	46274385	46274478	CACG	11
+```
 
 ## Calculating dosages
 
