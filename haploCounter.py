@@ -71,21 +71,34 @@ def count_haplo(haplolist):
 	return(hcount_dict)
 
 
-def write_counts(count_dict, sample, regtup, connection, wmode, mincount):
+def write_counts(count_dict, sample, regtup, con, mincount):
 	'''
 	write output to tab-delimited file
 	'''
 	if count_dict is None:
 		return(None)
-	if connection == '-':
-		con = sys.stdout
-	else:
-		con = open(connection, wmode)
+	#con = open(connection, 'a')
 	for hap in count_dict.keys():
 		if count_dict[hap] >= mincount:
 			out = [sample, regtup[0], str(regtup[1]), str(regtup[2]), hap, str(count_dict[hap])]	
 			con.write("	".join(out) + "\n")
-	con.close()
+	#con.close()
+	
+def run_haplocounter(bed, vcf, sam, sample, outfile, mincount):
+	'''
+	loop over bed file and run separate functions
+	'''
+	bedcon = open(bed, "r")
+	outcon = open(outfile, "w")
+	for line in bedcon:
+		reg = line.split("\t")
+		regtup = (reg[0], int(reg[1]), int(reg[2]))
+		snpl = vcf_to_list(vcf, regtup)
+		haplolist = frg_from_pileup(snpl, sam, regtup)		
+		ch = count_haplo(haplolist)
+		write_counts(ch, sample, regtup, outcon, mincount)
+	bedcon.close()
+	outcon.close()
 
 
 if __name__ == "__main__":
@@ -104,21 +117,19 @@ if __name__ == "__main__":
 	parser.add_argument('-i', type=str, required=True, help='Input BAM file. Reads should cover entire specified region in -r')
 	parser.add_argument('-s', type=str, required=True, help='Sample ID')
 	parser.add_argument('-vcf', type=str, required=True, help='Input (tabix-indexed) VCF/BCF file')
-	parser.add_argument('-r', type=str, required=True, help='Region chr:start-end')
+	parser.add_argument('-bed', type=str, required=True, help='Input bed file with target regions')
 	parser.add_argument('-c', type=int, default = 0, help='Minimum number of reads supporting haplotype')
 	parser.add_argument('-o', type=str, default='-', help='Output count file')
-	parser.add_argument('-wmode', type=str, default='w', help="Output write mode. E.g. 'a' for append or 'w' for write ")
+	# parser.add_argument('-wmode', type=str, default='w', help="Output write mode. E.g. 'a' for append or 'w' for write ")
 
 
 	args = parser.parse_args()
 	
-	rspl = args.r.split(":")
-	chr = rspl[0]
-	reg = rspl[1].split("-")
-	start = int(reg[0])
-	end = int(reg[1])
-	regtup = (chr, start, end)
-	snpl = vcf_to_list(args.vcf, regtup)
-	haplolist = frg_from_pileup(snpl, args.i, regtup)		
-	ch = count_haplo(haplolist)
-	write_counts(ch, args.s, regtup, args.o, args.wmode, args.c)
+	run_haplocounter(args.bed, args.vcf, args.i, args.s, args.o, args.c)
+	
+	# rspl = args.r.split(":")
+	# chr = rspl[0]
+	# reg = rspl[1].split("-")
+	# start = int(reg[0])
+	# end = int(reg[1])
+	
