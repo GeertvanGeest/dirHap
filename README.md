@@ -18,15 +18,13 @@ and numpy and pandas using pip:
 pip install numpy
 pip install pandas
 pip install scipy
-
 ```
 
 or conda:
 ```
-conda install -c anaconda numpy 
-conda install -c anaconda scipy 
-conda install -c anaconda pandas 
-
+conda install numpy 
+conda install scipy 
+conda install pandas 
 ```
 
 ## Counting haplotypes
@@ -38,8 +36,8 @@ Filter completely overlapping reads e.g. with bedtools:
 bedtools intersect -F 1 -abam alignment.bam -b regions.bed > alignment.intsc.bam
 ```
 
-Haplocounter works with a specified sample, on a specified region. 
-A vcf file denotes the SNPs used for haplotyping. 
+Haplocounter works with a specified sample, on a set of regions specified in a bed file. 
+An indexed vcf file denotes the SNPs used for haplotyping. 
 
 Here's an example:
 ```
@@ -52,8 +50,7 @@ python haploCounter.py \
 -o ./examples/haplotypes.txt
 ```
 
-This gives the following output (haplotypes.txt), which is a tab-delimited txt file, where columns correspond to "sample  chrom start end seq count"
-
+This gives the following output (haplotypes.txt), which is a tab-delimited txt file:
 ```
 s501	ST4.03ch01	29682248	29682338	ACA	408
 s501	ST4.03ch01	29682248	29682338	CCA	894
@@ -62,6 +59,15 @@ s501	ST4.03ch01	46274385	46274478	CCCC	538
 s501	ST4.03ch01	46274385	46274478	CCCG	198
 s501	ST4.03ch01	46274385	46274478	CACG	11
 ```
+
+The columns correspond to:
+1. **sample:** sample name  
+2. **chrom:** chromosome (as specified in bed)
+3. **start:** start (as specified in bed)
+4. **end:** end (as specified in bed)
+5. **seq:** a sequence of SNP alleles that define the haplotype. E.g.: if a region contains five SNPs, the lenght of this sequence is five, and denotes the alleles of the five SNPs in the same order as in the vcf. 
+6. **count:** the number of times this haplotype is observed in the reads of the corresponding the sample.
+
 
 ## Calculating dosages
 
