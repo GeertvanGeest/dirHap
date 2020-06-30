@@ -108,7 +108,7 @@ if __name__ == "__main__":
 	parser.add_argument('-vcf', type=str, required=True, help='Input (tabix-indexed) VCF/BCF file')
 	parser.add_argument('-bed', type=str, required=True, help='Input bed file with target regions')
 	parser.add_argument('-c', type=int, default = 0, help='Minimum number of reads supporting haplotype')
-	parser.add_argument('-o', '--output_file', type=str, required=True, help='Output count file')
+	parser.add_argument('-o', type=str, required=True, help='Output count file')
 
 	args = parser.parse_args()
 	
